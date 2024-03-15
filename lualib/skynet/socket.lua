@@ -7,7 +7,8 @@ local BUFFER_LIMIT = 128 * 1024
 local socket = {}	-- api
 local socket_pool = setmetatable( -- store all socket object
 	{},
-	{ __gc = function(p)
+	{ __gc = function(p) -- socket_pool 在进行垃圾回收的时候会调用该方法
+      -- 关闭掉当前所有的 socket
 		for id,v in pairs(p) do
 			driver.close(id)
 			p[id] = nil
